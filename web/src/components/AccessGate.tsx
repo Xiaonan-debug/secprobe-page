@@ -1,5 +1,6 @@
-// Everything on the site is private: visitors must sign in with GitHub and have read access to the data repo.
+// Task content and tools require read access to the private data repo.
 import { ReactNode, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { CONFIG } from "../lib/config";
 import { checkAccess } from "../lib/content";
 import { useSession } from "../lib/store";
@@ -10,30 +11,37 @@ import "./runner.css";
 
 export function AccessGate({ children }: { children: ReactNode }) {
   const { token, user, signOut, authError } = useSession();
-  const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
+  const [check, setCheck] = useState<{ token: string | null; state: "checking" | "ok" | "denied" }>({ token: null, state: "checking" });
 
   useEffect(() => {
-    if (CONFIG.localData) { setState("ok"); return; }
+    if (CONFIG.localData) return;
     if (!token) return;
     let live = true;
-    setState("checking");
-    checkAccess(token).then((ok) => live && setState(ok ? "ok" : "denied")).catch(() => live && setState("denied"));
+    setCheck({ token, state: "checking" });
+    checkAccess(token)
+      .then((ok) => live && setCheck({ token, state: ok ? "ok" : "denied" }))
+      .catch(() => live && setCheck({ token, state: "denied" }));
     return () => { live = false; };
   }, [token]);
 
+  const state = check.token === token ? check.state : "checking";
   if (CONFIG.localData || (token && state === "ok")) return <>{children}</>;
 
   return (
     <div className="wrap gate">
       <div className="gate-card">
         <Logo size={36} />
-        <p className="eyebrow" style={{ marginTop: 22 }}>Private preview</p>
-        <h1 className="h1" style={{ fontSize: "clamp(30px, 4vw, 42px)" }}>SecProbe</h1>
-        <p className="lede" style={{ marginTop: 8 }}>Adaptive evaluation of coding agents on cybersecurity vulnerabilities.</p>
+        <p className="eyebrow" style={{ marginTop: 22 }}>Access required</p>
+        <h1 className="h1" style={{ fontSize: "clamp(30px, 4vw, 42px)" }}>Explore SecProbe with approval.</h1>
+        <p className="lede" style={{ marginTop: 8 }}>The paper overview is public. Task details, source code, data and evaluation tools require author approval.</p>
+        <div className="row-wrap" style={{ marginTop: 22 }}>
+          <Link className="btn btn-primary" to="/access?resource=tasks"><IconLock /> Request access</Link>
+          <Link className="btn btn-ghost" to="/">Read the project overview</Link>
+        </div>
         {!token && (
           <div className="stack" style={{ marginTop: 28 }}>
             <p className="muted" style={{ margin: 0 }}>
-              <IconLock width={13} height={13} style={{ display: "inline", verticalAlign: -1 }} /> Access is limited to invited collaborators. Sign in with the GitHub account you were invited with.
+              <IconLock width={13} height={13} style={{ display: "inline", verticalAlign: -1 }} /> Already approved? Accept your GitHub invitation, then sign in with the account you were invited with.
             </p>
             {authError && <div className="alert alert-err">{authError}</div>}
             <SignIn />
@@ -44,7 +52,7 @@ export function AccessGate({ children }: { children: ReactNode }) {
           <div className="stack" style={{ marginTop: 28 }}>
             <div className="alert alert-warn">
               {user ? <>The GitHub account <b>{user.login}</b> doesn't have access yet.</> : <>This GitHub account doesn't have access yet.</>}{" "}
-              Ask the authors to add you as a collaborator, then accept the invitation from GitHub and reload this page.
+              Request access from the authors. After approval, accept the invitation from GitHub and reload this page. Signing in alone does not grant access.
             </div>
             <div className="row-wrap">
               <button className="btn" onClick={() => location.reload()}>I accepted the invitation — reload</button>

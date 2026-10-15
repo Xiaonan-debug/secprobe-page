@@ -38,6 +38,7 @@ jobs:
           VITE_GENERATED_REPO: ${{ vars.SECPROBE_GENERATED_REPO }}
           VITE_HF_DATASET: ${{ vars.SECPROBE_HF_DATASET }}
           VITE_CODE_URL: ${{ vars.SECPROBE_CODE_URL }}
+          VITE_ACCESS_REQUEST_URL: ${{ vars.SECPROBE_ACCESS_REQUEST_URL }}
           VITE_DATA_REPO: ${{ vars.SECPROBE_DATA_REPO }}
       - uses: actions/upload-pages-artifact@v3
         with:

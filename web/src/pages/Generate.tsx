@@ -216,7 +216,7 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
             <button className="btn btn-accent" style={{ width: "100%", justifyContent: "center", height: 44 }} disabled={busy || !validCwe || !hasKey || !model || !token} onClick={launch}>
               {busy ? <div className="spinner" /> : <><IconSparkle /> Generate task</>}
             </button>
-            <p className="hint" style={{ margin: "12px 0 0" }}><IconLock width={11} height={11} style={{ display: "inline", verticalAlign: -1 }} /> Generated tasks are published to the public <a href={`https://github.com/${CONFIG.generatedRepo}`} target="_blank" rel="noreferrer">community pool</a> under your GitHub name. The generator source stays private.</p>
+            <p className="hint" style={{ margin: "12px 0 0" }}><IconLock width={11} height={11} style={{ display: "inline", verticalAlign: -1 }} /> Generated tasks are stored in the private <a href={`https://github.com/${CONFIG.generatedRepo}`} target="_blank" rel="noreferrer">task pool</a> under your GitHub name. The generator source stays private.</p>
           </div>
         </aside>
       </div>

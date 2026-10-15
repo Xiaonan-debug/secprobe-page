@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSession } from "../lib/store";
 import { CONFIG } from "../lib/config";
-import { IconMenu, IconMonitor, IconMoon, IconSun, IconX } from "./Icons";
+import { IconLock, IconMenu, IconMonitor, IconMoon, IconSun, IconX } from "./Icons";
 import "./layout.css";
 
 export function Logo({ size = 22 }: { size?: number }) {
@@ -16,10 +16,10 @@ export function Logo({ size = 22 }: { size?: number }) {
 }
 
 const NAV = [
-  { to: "/tasks", label: "Tasks" },
-  { to: "/evaluate", label: "Evaluate" },
-  { to: "/generate", label: "Generate" },
-  { to: "/analysis", label: "SAST vs Agents" },
+  { to: "/tasks", label: "Tasks", restricted: true },
+  { to: "/evaluate", label: "Evaluate", restricted: true },
+  { to: "/generate", label: "Generate", restricted: true },
+  { to: "/analysis", label: "SAST vs Agents", restricted: true },
   { to: "/#results", label: "Results", hash: true },
 ];
 
@@ -39,7 +39,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const loc = useLocation();
-  useEffect(() => setOpen(false), [loc.pathname]);
+  useEffect(() => setOpen(false), [loc.pathname, loc.search, loc.hash]);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
     on();
@@ -60,11 +60,12 @@ export function Header() {
               <Link key={n.to} to={n.to} className="nav-link" onClick={() => setTimeout(() => document.getElementById("results")?.scrollIntoView(), 50)}>{n.label}</Link>
             ) : (
               <NavLink key={n.to} to={n.to} className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-                {n.label}
+                {n.label}{n.restricted && <IconLock width={11} height={11} aria-label="Access required" />}
                 {n.to === "/evaluate" && selection.length > 0 && <span className="nav-badge num">{selection.length}</span>}
               </NavLink>
             ),
           )}
+          <NavLink to="/access" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>Request access</NavLink>
           <a className="nav-link" href={CONFIG.paperUrl} target="_blank" rel="noreferrer">Paper</a>
         </nav>
         <div className="hdr-right">
@@ -97,7 +98,8 @@ export function Footer() {
         </p>
         <div className="row" style={{ gap: 18, fontSize: 13 }}>
           <a href={CONFIG.paperUrl} target="_blank" rel="noreferrer">arXiv</a>
-          <a href={CONFIG.codeUrl} target="_blank" rel="noreferrer">Code</a>
+          <Link to="/access?resource=code">Code</Link>
+          <Link to="/access?resource=data">Data</Link>
           <Link to="/tasks">Tasks</Link>
         </div>
       </div>

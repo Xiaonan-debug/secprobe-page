@@ -1,12 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { CONFIG, hfDatasetUrl } from "../lib/config";
-import { useAsync } from "../lib/hooks";
-import { CATEGORIES, LANGUAGES, LEVELS, Index, Language, Level, categoryColor, loadIndex, loadLeaderboard } from "../lib/data";
-import { TaskWall } from "../components/TaskWall";
-import { Leaderboard } from "../components/Leaderboard";
+import { CONFIG } from "../lib/config";
 import { AdaptiveLoop, IrtExplorer, SynthesisChain } from "../components/Method";
-import { IconArrowRight, IconCheck, IconCode, IconCopy, IconDatabase, IconPaper, IconPlay, IconSparkle } from "../components/Icons";
+import { IconArrowRight, IconCheck, IconCode, IconCopy, IconDatabase, IconLock, IconPaper, IconPlay, IconSparkle } from "../components/Icons";
 import "./home.css";
 
 const AUTHORS: [string, string, boolean?][] = [
@@ -25,10 +21,6 @@ const BIBTEX = `@article{luo2026secprobe,
 }`;
 
 export default function Home() {
-  const idx = useAsync(loadIndex, []);
-  const lb = useAsync(loadLeaderboard, []);
-  const counts = idx.data?.counts;
-
   return (
     <>
       {/* ------------------------------------------------------------ Hero */}
@@ -50,29 +42,22 @@ export default function Home() {
 
           <div className="row-wrap hero-ctas fade-in">
             <a className="btn btn-primary" href={CONFIG.paperUrl} target="_blank" rel="noreferrer"><IconPaper /> Paper</a>
-            <a className="btn" href={CONFIG.codeUrl} target="_blank" rel="noreferrer"><IconCode /> Code</a>
-            <a className="btn" href={hfDatasetUrl()} target="_blank" rel="noreferrer"><IconDatabase /> Dataset</a>
+            <Link className="btn" to="/access?resource=code"><IconCode /> Code <IconLock /></Link>
+            <Link className="btn" to="/access?resource=data"><IconDatabase /> Data <IconLock /></Link>
             <span className="hero-sep" />
-            <Link className="btn btn-ghost" to="/tasks">Browse 353 tasks <IconArrowRight /></Link>
+            <Link className="btn btn-ghost" to="/access?resource=tasks">Task details <IconLock /></Link>
           </div>
         </div>
 
-        <div className="wrap hero-figure">
-          <div className="hero-figure-head">
-            <div>
-              <div className="h3">The task pool</div>
-              <div className="muted" style={{ fontSize: 13.5 }}>Every cell is a repository-scale vulnerability-repair task. Hover to inspect, click to open its code.</div>
-            </div>
-            <Link to="/tasks" className="btn btn-sm">Open explorer <IconArrowRight /></Link>
-          </div>
-          {idx.data ? <TaskWall tasks={idx.data.tasks} /> : <div className="wall-skeleton" />}
+        <div className="wrap">
+          <p className="hero-access-note"><IconLock width={14} height={14} /> This page shares the paper overview. Task details, research code and data require approval. <Link to="/access">Request access <IconArrowRight width={14} height={14} /></Link></p>
         </div>
 
         <div className="wrap">
           <dl className="stats">
-            <div><dt>Tasks</dt><dd className="num">{counts?.tasks ?? 353}</dd></div>
-            <div><dt>CWE types</dt><dd className="num">{counts?.cwes ?? "—"}</dd></div>
-            <div><dt>Languages</dt><dd className="num">{counts ? Object.keys(counts.languages).length : "—"}</dd></div>
+            <div><dt>Tasks</dt><dd className="num">353</dd></div>
+            <div><dt>CWE types</dt><dd className="num">151</dd></div>
+            <div><dt>Languages</dt><dd className="num">6</dd></div>
             <div><dt>Models × harnesses</dt><dd className="num">9 × 2</dd></div>
             <div><dt>Best strict pass rate</dt><dd className="num accent">28.33%</dd></div>
             <div><dt>Fewer tasks vs. baselines</dt><dd className="num accent">−29.5%</dd></div>
@@ -133,7 +118,7 @@ export default function Home() {
           </div>
           <SynthesisChain />
           <div className="row-wrap" style={{ marginTop: 28 }}>
-            <Link to="/generate" className="btn btn-accent"><IconSparkle /> Synthesize a task with your own key</Link>
+            <Link to="/generate" className="btn btn-accent"><IconSparkle /> Synthesize a task with your own key <IconLock /></Link>
           </div>
         </div>
         <div className="wrap" style={{ marginTop: 96 }}>
@@ -160,14 +145,14 @@ export default function Home() {
               </p>
             </div>
           </div>
-          {lb.data ? <Leaderboard data={lb.data} /> : <div className="wall-skeleton" style={{ height: 420 }} />}
           <div className="row-wrap" style={{ marginTop: 28 }}>
-            <Link to="/evaluate" className="btn btn-primary"><IconPlay /> Evaluate your own agent</Link>
+            <a className="btn btn-primary" href={CONFIG.pdfUrl} target="_blank" rel="noreferrer"><IconPaper /> Read the full results</a>
+            <Link to="/evaluate" className="btn"><IconPlay /> Evaluate your own agent <IconLock /></Link>
           </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------ Efficiency + composition */}
+      {/* ------------------------------------------------------------ Efficiency */}
       <section className="section">
         <div className="wrap">
           <div className="section-head">
@@ -176,15 +161,6 @@ export default function Home() {
           </div>
           <Efficiency />
         </div>
-        {idx.data && (
-          <div className="wrap" style={{ marginTop: 96 }}>
-            <div className="section-head">
-              <p className="eyebrow">Composition</p>
-              <h2 className="h1">Repository-scale, multi-language, cross-file.</h2>
-            </div>
-            <Composition index={idx.data} />
-          </div>
-        )}
       </section>
 
       {/* ------------------------------------------------------------ Use it */}
@@ -192,12 +168,12 @@ export default function Home() {
         <div className="wrap">
           <div className="section-head">
             <p className="eyebrow">Use SecProbe</p>
-            <h2 className="h1">Read the code. Run your agent. Grow the pool.</h2>
+            <div><h2 className="h1">Request access to SecProbe resources.</h2><p className="lede" style={{ marginTop: 14 }}>The authors review requests before sharing task details, research code or data.</p></div>
           </div>
           <div className="use-grid">
-            <UseCard to="/tasks" icon={<IconCode />} title="Browse the 353 tasks" body="Open any vulnerable repository in the browser: file tree, syntax-highlighted source, public tests and the exact instruction the agent receives." cta="Open the explorer" />
-            <UseCard to="/evaluate" icon={<IconPlay />} title="Evaluate a coding agent" body="Pick tasks, a harness (Terminus-2, Mini-SWE-Agent, Claude Code, Codex, OpenHands…) and any model. Runs execute on your GitHub Actions with your API key." cta="Start an evaluation" />
-            <UseCard to="/generate" icon={<IconSparkle />} title="Generate a new task" body="Choose a CWE, language, software level and the difficulty vector h. The multi-agent generator builds, validates and releases an executable task." cta="Open the generator" />
+            <UseCard to="/access?resource=tasks" icon={<IconLock />} title="Task details" body="Request access to the task explorer, including task instructions, repository source and tests." cta="Request task access" />
+            <UseCard to="/access?resource=code" icon={<IconCode />} title="Research code" body="Request access to the SecProbe implementation for research and reproduction." cta="Request code access" />
+            <UseCard to="/access?resource=data" icon={<IconDatabase />} title="Benchmark data" body="Request approval to download the benchmark and executable task bundles." cta="Request data access" />
           </div>
         </div>
       </section>
@@ -263,72 +239,6 @@ function Efficiency() {
       <div className="prose" style={{ fontSize: 17 }}>
         <p>All three strategies begin with the same 150-task batch. Guided by the information gap, SecProbe concentrates synthesis on under-measured ability regions and reaches the target after <strong>244</strong> accepted tasks, versus <strong>328</strong> for random synthesis and <strong>346</strong> for one-shot synthesis: reductions of <strong>25.6%</strong> and <strong>29.5%</strong>.</p>
         <p>Difficulty is also controllable: holding CWE and specification fixed, moving h from Easy to Hard drops GPT-5.6-Sol's pass rate from 44.0% to 13.3%, with vulnerability complexity having the largest single effect.</p>
-      </div>
-    </div>
-  );
-}
-
-function Bars({ items, color }: { items: { label: string; n: number; color?: string; to?: string }[]; color?: string }) {
-  const max = Math.max(...items.map((i) => i.n));
-  const total = items.reduce((s, i) => s + i.n, 0);
-  return (
-    <div className="bars">
-      {items.map((i) => (
-        <Link className="bars-row" key={i.label} to={i.to ?? "/tasks"}>
-          <span className="bars-label">{i.label}</span>
-          <span className="bars-track"><span style={{ width: `${(i.n / max) * 100}%`, background: i.color ?? color ?? "var(--ink)" }} /></span>
-          <span className="bars-n num">{i.n}<span className="faint"> · {((i.n / total) * 100).toFixed(1)}%</span></span>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function Histogram({ values, bins: maxBins, label }: { values: number[]; bins: number; label: string }) {
-  const lo = Math.min(...values), hi = Math.max(...values);
-  const discrete = values.every(Number.isInteger) && hi - lo + 1 <= maxBins * 2;
-  const bins = discrete ? hi - lo + 1 : maxBins;
-  const w = discrete ? 1 : (hi - lo) / bins || 1;
-  const counts = new Array(bins).fill(0);
-  values.forEach((v) => counts[Math.min(bins - 1, Math.floor((v - lo) / w))]++);
-  const m = Math.max(...counts);
-  const sorted = [...values].sort((a, b) => a - b);
-  const median = sorted[Math.floor(sorted.length / 2)];
-  const mean = values.reduce((s, v) => s + v, 0) / values.length;
-  return (
-    <div className="hist">
-      <div className="hist-head"><span className="h3" style={{ fontSize: 13.5 }}>{label}</span><span className="faint mono" style={{ fontSize: 11.5 }}>median {fmt(median)} · mean {fmt(mean)}</span></div>
-      <div className="hist-bars">
-        {counts.map((c, i) => <span key={i} style={{ height: `${(c / m) * 100}%` }} title={discrete ? `${lo + i}: ${c} tasks` : `${fmt(lo + i * w)}–${fmt(lo + (i + 1) * w)}: ${c} tasks`} />)}
-      </div>
-      <div className="hist-axis mono"><span>{fmt(lo)}</span><span>{fmt(hi)}</span></div>
-    </div>
-  );
-}
-const fmt = (v: number) => (v >= 100 ? Math.round(v).toLocaleString() : v.toFixed(1).replace(/\.0$/, ""));
-
-function Composition({ index }: { index: Index }) {
-  const c = index.counts;
-  const langs = Object.entries(c.languages).sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ label: LANGUAGES[k as Language]?.label ?? k, n, color: LANGUAGES[k as Language]?.color, to: `/tasks?language=${k}` }));
-  const cats = CATEGORIES.filter((k) => c.categories[k]).map((k) => ({ label: k, n: c.categories[k], color: categoryColor(k), to: `/tasks?category=${k}` }));
-  const levels = Object.entries(c.levels).map(([k, n]) => ({ label: LEVELS[k as Level]?.label ?? k, n, to: `/tasks?level=${k}` }));
-  const t = index.tasks;
-  return (
-    <div className="comp">
-      <div className="comp-col">
-        <div className="eyebrow">Implementation language</div>
-        <Bars items={langs} />
-        <div className="eyebrow" style={{ marginTop: 28 }}>Software level</div>
-        <Bars items={levels} color="var(--ink-2)" />
-      </div>
-      <div className="comp-col">
-        <div className="eyebrow">Security category</div>
-        <Bars items={cats} />
-      </div>
-      <div className="comp-col comp-hists">
-        <Histogram values={t.map((x) => x.loc)} bins={14} label="Source lines of code" />
-        <Histogram values={t.map((x) => x.attack_paths)} bins={12} label="Attack paths per task" />
-        <Histogram values={t.map((x) => x.seed_score)} bins={14} label="Vulnerable-seed grader score" />
       </div>
     </div>
   );
