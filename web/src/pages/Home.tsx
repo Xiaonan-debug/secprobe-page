@@ -56,7 +56,7 @@ export default function Home() {
 
           <div className="affiliation-logos" aria-label="Author affiliations">
             {INSTITUTIONS.map(({ name, file, url }) => (
-              <a key={name} href={url} target="_blank" rel="noreferrer" className={`school-link${file === "penn.png" ? " school-link-penn" : ""}`} aria-label={name}>
+              <a key={name} href={url} target="_blank" rel="noreferrer" className={`school-link${file === "penn.png" ? " school-link-penn" : file === "bake-ai.svg" ? " school-link-bake" : ""}`} aria-label={name}>
                 <img src={`${import.meta.env.BASE_URL}affiliations/${file}`} alt={name} width={180} height={64} />
               </a>
             ))}
