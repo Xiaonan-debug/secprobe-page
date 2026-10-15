@@ -1,15 +1,16 @@
 // Method figures: the adaptive outer loop, the multi-agent synthesis inner loop, and a 2PL-IRT explorable.
 import { useEffect, useMemo, useState } from "react";
 import { GEN_STAGES } from "../lib/runner";
+import { Math as LatexMath } from "./Math";
 import "./method.css";
 
 const LOOP = [
-  { key: "config", title: "Configuration", math: "(c, s, h)", body: "A target CWE class c, a software specification s (language, application context, architecture) and a difficulty-control vector h = (h_repo, h_arch, h_vuln, h_eval)." },
-  { key: "synth", title: "Task synthesis", math: "x ~ D(c, s, h)", body: "Five specialist agents build a repository-scale vulnerable project with exploit tests, functional tests and a reference patch. Only tasks that pass deterministic release checks enter the pool." },
-  { key: "eval", title: "Agent evaluation", math: "y_ij ∈ {0, 1}", body: "Each coding agent must find and repair the hidden vulnerabilities. Success requires T_func = 1 and T_sec = 1 on the patched repository: tested functionality preserved, every tested exploit blocked." },
-  { key: "irt", title: "Bayesian 2PL-IRT", math: "σ(α_i(θ_j − β_i))", body: "A Bayesian two-parameter logistic model jointly estimates agent ability θ, task difficulty β and discrimination α from all accumulated outcomes, with posterior uncertainty." },
-  { key: "gap", title: "Information gap", math: "G_t(θ)", body: "Where is the agent pool concentrated but the task pool uninformative? G_t(θ) weighs agent density against the Fisher information current tasks provide; its maximum sets the target difficulty β*." },
-  { key: "policy", title: "Next-task policy", math: "(α*, β*)", body: "Select existing tasks that match the target. If none are suitable, map (α*, β*) to the closest generation configuration (c*, s*, h*) and synthesize new tasks. Stop when the normalized maximum gap falls below threshold." },
+  { key: "config", title: "Configuration", math: String.raw`(c, s, \mathbf{h})`, body: <>A target CWE class <LatexMath tex="c" />, a software specification <LatexMath tex="s" /> (language, application context, architecture) and a difficulty-control vector <LatexMath tex={String.raw`\mathbf{h} = (h_{\mathrm{repo}}, h_{\mathrm{arch}}, h_{\mathrm{vuln}}, h_{\mathrm{eval}})`} />.</> },
+  { key: "synth", title: "Task synthesis", math: String.raw`x \sim \mathcal{D}(c, s, \mathbf{h})`, body: <>Five specialist agents build a repository-scale vulnerable project with exploit tests, functional tests and a reference patch. Only tasks that pass deterministic release checks enter the pool.</> },
+  { key: "eval", title: "Agent evaluation", math: String.raw`y_{ij} \in \{0, 1\}`, body: <>Each coding agent must find and repair the hidden vulnerabilities. Success requires <LatexMath tex={String.raw`T_{\mathrm{func}} = 1`} /> and <LatexMath tex={String.raw`T_{\mathrm{sec}} = 1`} /> on the patched repository: tested functionality preserved, every tested exploit blocked.</> },
+  { key: "irt", title: "Bayesian 2PL-IRT", math: String.raw`\sigma\!\bigl(\alpha_i(\theta_j - \beta_i)\bigr)`, body: <>A Bayesian two-parameter logistic model jointly estimates agent ability <LatexMath tex={String.raw`\theta`} />, task difficulty <LatexMath tex={String.raw`\beta`} /> and discrimination <LatexMath tex={String.raw`\alpha`} /> from all accumulated outcomes, with posterior uncertainty.</> },
+  { key: "gap", title: "Information gap", math: String.raw`G_t(\theta)`, body: <>Where is the agent pool concentrated but the task pool uninformative? <LatexMath tex={String.raw`G_t(\theta)`} /> weighs agent density against the Fisher information current tasks provide; its maximum sets the target difficulty <LatexMath tex={String.raw`\beta^{\ast}`} />.</> },
+  { key: "policy", title: "Next-task policy", math: String.raw`(\alpha^{\ast}, \beta^{\ast})`, body: <>Select existing tasks that match the target. If none are suitable, map <LatexMath tex={String.raw`(\alpha^{\ast}, \beta^{\ast})`} /> to the closest generation configuration <LatexMath tex={String.raw`(c^{\ast}, s^{\ast}, \mathbf{h}^{\ast})`} /> and synthesize new tasks. Stop when the normalized maximum gap falls below threshold.</> },
 ];
 
 function labelPos(p: { x: number; y: number }, cx: number, cy: number) {
@@ -68,7 +69,7 @@ export function AdaptiveLoop() {
       <div className="loop-card fade-in" key={active}>
         <div className="eyebrow" style={{ marginBottom: 8 }}>Step {active + 1} of {LOOP.length}</div>
         <div className="h2" style={{ fontSize: 26 }}>{LOOP[active].title}</div>
-        <div className="loop-math mono">{LOOP[active].math}</div>
+        <div className="loop-math"><LatexMath tex={LOOP[active].math} display /></div>
         <p className="prose" style={{ fontSize: 16.5, margin: 0 }}>{LOOP[active].body}</p>
         <div className="row" style={{ marginTop: 18, gap: 6 }}>
           {LOOP.map((_, i) => (
@@ -84,7 +85,7 @@ export function AdaptiveLoop() {
 
 export function SynthesisChain() {
   const agents = GEN_STAGES.slice(0, 5);
-  const out = ["CWE security profile φ_c", "Blueprint b", "Test strategy q", "Executable task x + reference Δ*", "pass / revise"];
+  const out = [<>CWE security profile <LatexMath tex={String.raw`\phi_c`} /></>, <>Blueprint <LatexMath tex="b" /></>, <>Test strategy <LatexMath tex="q" /></>, <>Executable task <LatexMath tex="x" /> + reference <LatexMath tex={String.raw`\Delta^{\ast}`} /></>, "pass / revise"];
   return (
     <div className="chain">
       {agents.map((a, i) => (
@@ -92,7 +93,7 @@ export function SynthesisChain() {
           <div className="chain-idx mono">{String(i + 1).padStart(2, "0")}</div>
           <div className="chain-title">{a.label}</div>
           <div className="chain-blurb">{a.blurb}</div>
-          <div className="chain-out mono">→ {out[i]}</div>
+          <div className="chain-out">→ {out[i]}</div>
         </div>
       ))}
       <div className="chain-revise" aria-hidden="true">
@@ -148,24 +149,28 @@ export function IrtExplorer() {
         <path d={iccPath} fill="none" stroke="var(--ink)" strokeWidth="2" />
         <line x1={xs(theta)} x2={xs(theta)} y1={ys(0)} y2={ys(pTheta)} stroke="var(--vuln)" strokeWidth="1.5" />
         <circle cx={xs(theta)} cy={ys(pTheta)} r="5" fill="var(--vuln)" />
-        <text x={xs(beta) + 6} y={ys(1) + 12} className="irt-ann">β (difficulty)</text>
-        <text x={W - P.r} y={ys(0) - 6} textAnchor="end" className="irt-ann" style={{ fill: "var(--accent)" }}>information α²p(1−p)</text>
+        <foreignObject x={Math.min(xs(beta) + 6, W - P.r - 110)} y={ys(1)} width={110} height={26}>
+          <div className="irt-annotation"><LatexMath tex={String.raw`\beta`} /> (difficulty)</div>
+        </foreignObject>
+        <foreignObject x={W - P.r - 158} y={ys(0) - 28} width={158} height={26}>
+          <div className="irt-annotation irt-information">information <LatexMath tex={String.raw`\alpha^2p(1-p)`} /></div>
+        </foreignObject>
       </svg>
       <div className="irt-controls">
         <label className="field">
-          <span className="label">Agent ability θ <span className="mono faint">{theta.toFixed(2)}</span></span>
+          <span className="label">Agent ability <LatexMath tex={String.raw`\theta`} /> <span className="mono faint">{theta.toFixed(2)}</span></span>
           <input type="range" min={-3} max={3} step={0.05} value={theta} onChange={(e) => setTheta(+e.target.value)} />
         </label>
         <label className="field">
-          <span className="label">Task difficulty β <span className="mono faint">{beta.toFixed(2)}</span></span>
+          <span className="label">Task difficulty <LatexMath tex={String.raw`\beta`} /> <span className="mono faint">{beta.toFixed(2)}</span></span>
           <input type="range" min={-2.5} max={2.5} step={0.05} value={beta} onChange={(e) => setBeta(+e.target.value)} />
         </label>
         <label className="field">
-          <span className="label">Discrimination α <span className="mono faint">{alpha.toFixed(2)}</span></span>
+          <span className="label">Discrimination <LatexMath tex={String.raw`\alpha`} /> <span className="mono faint">{alpha.toFixed(2)}</span></span>
           <input type="range" min={0.3} max={4} step={0.05} value={alpha} onChange={(e) => setAlpha(+e.target.value)} />
         </label>
         <div className="irt-readout">
-          <span className="mono">Pr(y = 1) = σ(α(θ − β)) =</span>
+          <LatexMath tex={String.raw`\Pr(y=1)=\sigma\!\bigl(\alpha(\theta-\beta)\bigr)=`} />
           <b className="num">{pTheta.toFixed(3)}</b>
         </div>
         <p className="hint" style={{ margin: 0 }}>

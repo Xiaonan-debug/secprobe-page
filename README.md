@@ -38,3 +38,7 @@ The SecProbe mark is an editable SVG feedback loop used in the header, hero, foo
 
 The university strip identifies the paper authors' affiliations using official artwork on a white
 surface in both themes. Asset source links are recorded in `web/public/affiliations/SOURCES.txt`.
+
+Mathematical notation uses KaTeX with local font assets and MathML accessibility output. Authored
+expressions go through the shared `Math` component; inline text, method equations, chart annotations
+and generation controls use the same renderer.

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CONFIG } from "../lib/config";
 import { Logo } from "../components/Layout";
 import { AdaptiveLoop, IrtExplorer, SynthesisChain } from "../components/Method";
+import { Math } from "../components/Math";
 import { IconArrowRight, IconCheck, IconCode, IconCopy, IconDatabase, IconLock, IconPaper, IconPlay, IconSparkle } from "../components/Icons";
 import "./home.css";
 
@@ -256,7 +257,7 @@ function Efficiency() {
       </div>
       <div className="prose" style={{ fontSize: 17 }}>
         <p>All three strategies begin with the same 150-task batch. Guided by the information gap, SecProbe concentrates synthesis on under-measured ability regions and reaches the target after <strong>244</strong> accepted tasks, versus <strong>328</strong> for random synthesis and <strong>346</strong> for one-shot synthesis: reductions of <strong>25.6%</strong> and <strong>29.5%</strong>.</p>
-        <p>Difficulty is also controllable: holding CWE and specification fixed, moving h from Easy to Hard drops GPT-5.6-Sol's pass rate from 44.0% to 13.3%, with vulnerability complexity having the largest single effect.</p>
+        <p>Difficulty is also controllable: holding CWE and specification fixed, moving <Math tex="h" /> from Easy to Hard drops GPT-5.6-Sol's pass rate from 44.0% to 13.3%, with vulnerability complexity having the largest single effect.</p>
       </div>
     </div>
   );
