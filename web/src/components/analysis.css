@@ -9,7 +9,7 @@
 .an-stats { display: grid; grid-template-columns: repeat(5, auto); justify-content: start; gap: 0 40px; margin: 0; border-top: 1px solid var(--line); }
 .an-stats > div { padding-top: 12px; }
 .an-stats dt { font-size: 11.5px; color: var(--muted); }
-.an-stats dd { margin: 2px 0 0; font-family: var(--serif); font-size: 28px; letter-spacing: -0.015em; }
+.an-stats dd { margin: 2px 0 0; font-family: var(--sans); font-size: 28px; letter-spacing: -0.015em; }
 .an-sev { display: flex; gap: 14px; font-size: 20px !important; align-items: baseline; }
 .an-sev span { display: inline-flex; align-items: center; gap: 6px; }
 .an-sev i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }

@@ -29,3 +29,12 @@ service-side permissions.
 
 `VITE_LOCAL_DATA=1` bypasses the gate for development fixtures only; never enable it for a public build
 or put private content in `web/public`.
+
+## Visual identity
+
+The interface uses self-hosted Google Sans (400–700, normal and italic), with JetBrains Mono for code
+and numeric annotations. Official font sources, licensing and trademark notes are in `web/public/fonts`.
+The SecProbe mark is an editable SVG feedback loop used in the header, hero, footer and favicon.
+
+The university strip identifies the paper authors' affiliations using official artwork on a white
+surface in both themes. Asset source links are recorded in `web/public/affiliations/SOURCES.txt`.

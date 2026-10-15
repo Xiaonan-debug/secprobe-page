@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CONFIG } from "../lib/config";
+import { Logo } from "../components/Layout";
 import { AdaptiveLoop, IrtExplorer, SynthesisChain } from "../components/Method";
 import { IconArrowRight, IconCheck, IconCode, IconCopy, IconDatabase, IconLock, IconPaper, IconPlay, IconSparkle } from "../components/Icons";
 import "./home.css";
@@ -11,6 +12,15 @@ const AUTHORS: [string, string, boolean?][] = [
   ["Yufei Han", "8"], ["Xiangliang Zhang", "1"],
 ];
 const AFFILS = ["University of Notre Dame", "Bake AI", "Vanderbilt University", "University of Pennsylvania", "LMU Munich", "University of Washington", "Stanford University", "Inria"];
+
+const SCHOOLS = [
+  { name: "University of Notre Dame", file: "notre-dame.png", url: "https://www.nd.edu/" },
+  { name: "Vanderbilt University", file: "vanderbilt.svg", url: "https://www.vanderbilt.edu/" },
+  { name: "University of Pennsylvania", file: "penn.png", url: "https://www.upenn.edu/" },
+  { name: "LMU Munich", file: "lmu.svg", url: "https://www.lmu.de/" },
+  { name: "University of Washington", file: "washington.png", url: "https://www.washington.edu/" },
+  { name: "Stanford University", file: "stanford.png", url: "https://www.stanford.edu/" },
+];
 
 const BIBTEX = `@article{luo2026secprobe,
   title   = {SecProbe: Adaptive Evaluation of Coding Agents on Cybersecurity Vulnerabilities},
@@ -27,17 +37,25 @@ export default function Home() {
       <section className="hero">
         <div className="wrap">
           <p className="eyebrow fade-in">Research · Agent evaluation · Code security</p>
-          <h1 className="display fade-in">SecProbe</h1>
+          <div className="hero-identity fade-in"><Logo size={84} /><h1 className="display">SecProbe</h1></div>
           <p className="hero-sub fade-in">Adaptive evaluation of coding agents on cybersecurity vulnerabilities</p>
 
           <div className="authors fade-in">
-            {AUTHORS.map(([n, a, eq], i) => (
-              <span key={n}>{n}<sup>{a}{eq ? "*" : ""}</sup>{i < AUTHORS.length - 1 ? "" : ""}</span>
+            {AUTHORS.map(([n, a, eq]) => (
+              <span key={n}>{n}<sup>{a}{eq ? "*" : ""}</sup></span>
             ))}
           </div>
           <div className="affils fade-in">
             {AFFILS.map((a, i) => <span key={a}><sup>{i + 1}</sup>{a}</span>)}
             <span><sup>*</sup>Equal contribution</span>
+          </div>
+
+          <div className="affiliation-logos" aria-label="Author university affiliations">
+            {SCHOOLS.map(({ name, file, url }) => (
+              <a key={name} href={url} target="_blank" rel="noreferrer" className={`school-link${file === "penn.png" ? " school-link-penn" : ""}`} aria-label={name}>
+                <img src={`${import.meta.env.BASE_URL}affiliations/${file}`} alt={name} width={180} height={64} />
+              </a>
+            ))}
           </div>
 
           <div className="row-wrap hero-ctas fade-in">
@@ -50,7 +68,7 @@ export default function Home() {
         </div>
 
         <div className="wrap">
-          <p className="hero-access-note"><IconLock width={14} height={14} /> This page shares the paper overview. Task details, research code and data require approval. <Link to="/access">Request access <IconArrowRight width={14} height={14} /></Link></p>
+          <p className="hero-access-note"><IconLock width={14} height={14} /><span>This page shares the paper overview. Task details, research code and data require approval. <Link to="/access">Request access <IconArrowRight width={14} height={14} /></Link></span></p>
         </div>
 
         <div className="wrap">
@@ -206,7 +224,7 @@ function UseCard({ to, icon, title, body, cta }: { to: string; icon: React.React
   return (
     <Link to={to} className="use-card">
       <div className="use-icon">{icon}</div>
-      <div className="h3" style={{ fontSize: 18, fontFamily: "var(--serif)", fontWeight: 500 }}>{title}</div>
+      <div className="h3" style={{ fontSize: 18, fontFamily: "var(--sans)", fontWeight: 500 }}>{title}</div>
       <p className="muted" style={{ margin: 0, fontSize: 14 }}>{body}</p>
       <span className="use-cta">{cta} <IconArrowRight width={15} height={15} /></span>
     </Link>

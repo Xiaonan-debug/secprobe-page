@@ -1,8 +1,6 @@
 import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter, Outlet, Route, Routes } from "react-router-dom";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/source-serif-4";
 import "@fontsource-variable/jetbrains-mono";
 import "./styles/global.css";
 import { SessionProvider } from "./lib/store";

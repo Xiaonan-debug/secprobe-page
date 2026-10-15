@@ -5,12 +5,12 @@ import { CONFIG } from "../lib/config";
 import { IconLock, IconMenu, IconMonitor, IconMoon, IconSun, IconX } from "./Icons";
 import "./layout.css";
 
-export function Logo({ size = 22 }: { size?: number }) {
+// Two opposing sweeps form an open feedback loop around the subject being probed.
+export function Logo({ size = 28 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="7" fill="var(--ink)" />
-      <path d="M9 21.5c1.4 1.3 3.4 2 5.6 2 3.3 0 5.4-1.6 5.4-4 0-2.2-1.5-3.2-4.6-3.9-2.4-.5-3.1-1-3.1-2 0-1 .9-1.7 2.6-1.7 1.5 0 2.8.5 3.8 1.3" fill="none" stroke="var(--bg)" strokeWidth="2.4" strokeLinecap="round" />
-      <circle cx="23.5" cy="9" r="2.2" fill="var(--accent)" />
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M8 32C8 18.745 18.745 8 32 8h17l-9 9h-8c-8.284 0-15 6.716-15 15v17l-9-9V32Z" fill="currentColor" />
+      <path d="M56 32c0 13.255-10.745 24-24 24H15l9-9h8c8.284 0 15-6.716 15-15V15l9 9v8Z" fill="var(--accent)" />
     </svg>
   );
 }
@@ -89,8 +89,8 @@ export function Footer() {
     <footer className="ftr">
       <div className="wrap ftr-in">
         <div className="row" style={{ gap: 12 }}>
-          <Logo size={20} />
-          <span className="mono" style={{ fontSize: 12 }}>SecProbe</span>
+          <Logo size={26} />
+          <span style={{ fontSize: 14, fontWeight: 500 }}>SecProbe</span>
         </div>
         <p className="faint" style={{ fontSize: 13, margin: 0, maxWidth: 560 }}>
           University of Notre Dame · Bake AI · Vanderbilt · UPenn · LMU Munich · UW · Stanford · Inria.

@@ -1,6 +1,6 @@
 .loop { display: grid; grid-template-columns: minmax(280px, 440px) 1fr; gap: 40px; align-items: center; }
 .loop-svg { width: 100%; height: auto; overflow: visible; }
-.loop-center { font-family: var(--serif); font-size: 22px; fill: var(--ink); font-style: italic; }
+.loop-center { font-family: var(--sans); font-size: 22px; fill: var(--ink); font-weight: 500; }
 .loop-center-sub { font-family: var(--mono); font-size: 10px; fill: var(--faint); letter-spacing: .1em; text-transform: uppercase; }
 .loop-node { cursor: pointer; outline: none; }
 .loop-node circle { fill: var(--bg-raised); stroke: var(--line-strong); stroke-width: 1.25; transition: fill .25s, stroke .25s; }
@@ -41,5 +41,5 @@
 .irt-controls { display: grid; gap: 16px; }
 .irt-controls .label { display: flex; justify-content: space-between; }
 .irt-readout { display: flex; align-items: baseline; gap: 10px; padding: 12px 14px; border-radius: 8px; background: var(--bg-sunken); font-size: 13px; }
-.irt-readout b { font-size: 22px; font-family: var(--serif); font-weight: 500; color: var(--vuln); }
+.irt-readout b { font-size: 22px; font-family: var(--sans); font-weight: 500; color: var(--vuln); }
 @media (max-width: 860px) { .irt { grid-template-columns: 1fr; gap: 20px; } }

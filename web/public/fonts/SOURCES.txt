@@ -1,0 +1,31 @@
+Google Sans — self-hosted official Google Fonts webfont subsets
+Downloaded 2026-10-14
+
+Family: Google Sans (not Google Sans Flex or Product Sans)
+Weights: variable 400–700
+Optical size: variable 17–18; grade pinned at default 0 by Google Fonts CSS API
+Styles: normal and italic
+Subset: Latin (English text and Latin punctuation)
+License: SIL Open Font License 1.1; see google-sans-OFL.txt
+
+Official family page: https://fonts.google.com/specimen/Google+Sans
+Official font source: https://github.com/googlefonts/googlesans
+Official distribution: https://github.com/google/fonts/tree/main/ofl/googlesans
+License source: https://raw.githubusercontent.com/google/fonts/main/ofl/googlesans/OFL.txt
+Trademark source: https://raw.githubusercontent.com/google/fonts/main/ofl/googlesans/TRADEMARKS.md
+CSS API: https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap
+
+[
+  {
+    "file": "google-sans-latin-italic-variable.woff2",
+    "style": "italic",
+    "url": "https://fonts.gstatic.com/s/googlesans/v71/4UaXrENHsxJlGDuGo1OIlL3L2JB874GPhFI9_IqmuTCKjshW7d0w.woff2",
+    "bytes": 60396
+  },
+  {
+    "file": "google-sans-latin-variable.woff2",
+    "style": "normal",
+    "url": "https://fonts.gstatic.com/s/googlesans/v71/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCIhM907w.woff2",
+    "bytes": 55076
+  }
+]
