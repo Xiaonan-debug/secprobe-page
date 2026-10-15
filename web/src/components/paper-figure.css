@@ -1,0 +1,18 @@
+.paper-figure { margin: 44px 0 0; min-width: 0; }
+.paper-figure-image { position: relative; display: block; padding: clamp(12px, 2.5vw, 28px); background: #fff; border: 1px solid var(--line); border-radius: 14px; text-decoration: none; }
+.paper-figure-image img { width: 100%; height: auto; }
+.paper-figure-zoom { position: absolute; right: 12px; bottom: 10px; display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px; background: #fff; color: #57554f; font-size: 11px; opacity: 0; transition: opacity .15s; }
+.paper-figure-image:hover .paper-figure-zoom, .paper-figure-image:focus-visible .paper-figure-zoom { opacity: 1; }
+.paper-figure figcaption { display: flex; align-items: baseline; gap: 12px 18px; padding: 16px 2px 0; }
+.paper-figure-number { flex: none; font-size: 11px; font-weight: 500; letter-spacing: .05em; color: var(--accent-ink); text-transform: uppercase; }
+.paper-figure-copy { flex: 1; min-width: 0; font-size: 14px; }
+.paper-figure-copy strong { font-weight: 500; }
+.paper-figure-copy p { margin: 5px 0 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.paper-figure-source { display: inline-flex; align-items: center; gap: 5px; flex: none; font-size: 12px; color: var(--muted); }
+.paper-figure-attribution { margin: 16px 0 0; font-size: 12px; color: var(--muted); }
+@media (max-width: 680px) {
+  .paper-figure figcaption { flex-wrap: wrap; gap: 8px 12px; }
+  .paper-figure-copy { flex-basis: calc(100% - 84px); }
+  .paper-figure-source { margin-left: 72px; }
+  .paper-figure-zoom { position: static; display: flex; justify-content: flex-end; opacity: 1; margin-top: 8px; padding: 0; }
+}

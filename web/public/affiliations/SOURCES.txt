@@ -52,3 +52,19 @@ Exact asset URL: https://identity.stanford.edu/wp-content/uploads/sites/3/2020/0
 Variant: Full university wordmark, Cardinal red, transparent PNG.
 Downloaded unchanged. The official guide specifies a light background for this
 variant; retain a white logo-strip surface when the rest of the site is dark.
+
+Bake AI
+File: bake-ai.svg
+Official home: https://www.bakeai.inc/
+Exact asset URL: https://www.bakeai.inc/brand/bake-ai-wordmark.svg
+Variant: Official black horizontal wordmark, also used in the homepage header
+and Organization metadata. Downloaded unchanged; display on the white strip.
+
+Inria
+File: inria.svg
+Official home: https://www.inria.fr/
+Brand reference: https://www.inria.fr/fr/charte-dutilisation-de-lidentite-visuelle-dinria
+Official asset archive: https://files.inria.fr/dircom/extranet/LOGOS_pack_web.zip
+Archive member: LOGOS_pack_web/svg/inr_logo_rouge.svg
+Variant: Official red logo, extracted unchanged from Inria's public web asset pack.
+Preserve red color and clearspace; display on the white strip in both themes.

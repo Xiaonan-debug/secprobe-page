@@ -36,9 +36,13 @@ The interface uses self-hosted Google Sans (400–700, normal and italic), with 
 and numeric annotations. Official font sources, licensing and trademark notes are in `web/public/fonts`.
 The SecProbe mark is an editable SVG feedback loop used in the header, hero, footer and favicon.
 
-The university strip identifies the paper authors' affiliations using official artwork on a white
+The affiliation strip identifies the paper authors' affiliations using official artwork on a white
 surface in both themes. Asset source links are recorded in `web/public/affiliations/SOURCES.txt`.
 
 Mathematical notation uses KaTeX with local font assets and MathML accessibility output. Authored
 expressions go through the shared `Math` component; inline text, method equations, chart annotations
 and generation controls use the same renderer.
+
+The homepage also reproduces Figures 1, 8 and 9 from the public paper: framework overview, agent
+performance and adaptive efficiency. Original source URLs, captions and CC BY attribution are recorded
+in `web/public/paper/SOURCES.txt`; each figure links to the paper and opens at full size.

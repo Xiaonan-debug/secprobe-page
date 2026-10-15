@@ -4,6 +4,7 @@ import { CONFIG } from "../lib/config";
 import { Logo } from "../components/Layout";
 import { AdaptiveLoop, IrtExplorer, SynthesisChain } from "../components/Method";
 import { Math } from "../components/Math";
+import { PaperFigure } from "../components/PaperFigure";
 import { IconArrowRight, IconCheck, IconCode, IconCopy, IconDatabase, IconLock, IconPaper, IconPlay, IconSparkle } from "../components/Icons";
 import "./home.css";
 
@@ -14,13 +15,15 @@ const AUTHORS: [string, string, boolean?][] = [
 ];
 const AFFILS = ["University of Notre Dame", "Bake AI", "Vanderbilt University", "University of Pennsylvania", "LMU Munich", "University of Washington", "Stanford University", "Inria"];
 
-const SCHOOLS = [
+const INSTITUTIONS = [
   { name: "University of Notre Dame", file: "notre-dame.png", url: "https://www.nd.edu/" },
+  { name: "Bake AI", file: "bake-ai.svg", url: "https://www.bakeai.inc/" },
   { name: "Vanderbilt University", file: "vanderbilt.svg", url: "https://www.vanderbilt.edu/" },
   { name: "University of Pennsylvania", file: "penn.png", url: "https://www.upenn.edu/" },
   { name: "LMU Munich", file: "lmu.svg", url: "https://www.lmu.de/" },
   { name: "University of Washington", file: "washington.png", url: "https://www.washington.edu/" },
   { name: "Stanford University", file: "stanford.png", url: "https://www.stanford.edu/" },
+  { name: "Inria", file: "inria.svg", url: "https://www.inria.fr/" },
 ];
 
 const BIBTEX = `@article{luo2026secprobe,
@@ -51,8 +54,8 @@ export default function Home() {
             <span><sup>*</sup>Equal contribution</span>
           </div>
 
-          <div className="affiliation-logos" aria-label="Author university affiliations">
-            {SCHOOLS.map(({ name, file, url }) => (
+          <div className="affiliation-logos" aria-label="Author affiliations">
+            {INSTITUTIONS.map(({ name, file, url }) => (
               <a key={name} href={url} target="_blank" rel="noreferrer" className={`school-link${file === "penn.png" ? " school-link-penn" : ""}`} aria-label={name}>
                 <img src={`${import.meta.env.BASE_URL}affiliations/${file}`} alt={name} width={180} height={64} />
               </a>
@@ -112,6 +115,7 @@ export default function Home() {
               <Finding k="4.40 / 5" t="Expert quality rating" d="Mean expert rating across six dimensions; 92% of reviewed tasks accepted for inclusion." />
             </div>
           </div>
+          <PaperFigure file="framework-overview.svg" number={1} title="The SecProbe framework" caption="Adaptive evaluation identifies where evidence is missing, then selects tasks or invokes five specialist agents to synthesize new ones." width={1140} height={411} />
         </div>
       </section>
 
@@ -164,6 +168,7 @@ export default function Home() {
               </p>
             </div>
           </div>
+          <PaperFigure file="agent-performance.png" number={8} title="How frontier agents perform" caption="Pass rates and mean scores for nine models with two agent harnesses. The strongest configuration reaches a strict pass rate of 28.33%." width={1876} height={765} />
           <div className="row-wrap" style={{ marginTop: 28 }}>
             <a className="btn btn-primary" href={CONFIG.pdfUrl} target="_blank" rel="noreferrer"><IconPaper /> Read the full results</a>
             <Link to="/evaluate" className="btn"><IconPlay /> Evaluate your own agent <IconLock /></Link>
@@ -178,6 +183,7 @@ export default function Home() {
             <p className="eyebrow">Efficiency</p>
             <h2 className="h1">Adaptive synthesis reaches the target with fewer tasks.</h2>
           </div>
+          <PaperFigure file="adaptive-efficiency.svg" number={9} title="More information from fewer evaluations" caption="SecProbe reaches the normalized information-gap target of 0.30 after 244 accepted tasks, compared with 328 for random synthesis and 346 for one-shot synthesis." width={1050} height={344} />
           <Efficiency />
         </div>
       </section>
@@ -205,6 +211,7 @@ export default function Home() {
             <h2 className="h2">BibTeX</h2>
           </div>
           <Bibtex />
+          <p className="paper-figure-attribution">Figures 1, 8 and 9 from <a href={CONFIG.paperUrl} target="_blank" rel="noreferrer">Luo et al. (2026)</a>, shared under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>.</p>
         </div>
       </section>
     </>
@@ -233,32 +240,10 @@ function UseCard({ to, icon, title, body, cta }: { to: string; icon: React.React
 }
 
 function Efficiency() {
-  const rows = [
-    { name: "SecProbe (adaptive)", n: 244, accent: true },
-    { name: "Random synthesis", n: 328 },
-    { name: "One-shot synthesis", n: 346 },
-  ];
-  const max = 400;
   return (
-    <div className="eff">
-      <div className="eff-bars">
-        {rows.map((r) => (
-          <div className="eff-row" key={r.name}>
-            <div className="eff-name">{r.name}</div>
-            <div className="eff-track">
-              <div className={`eff-bar ${r.accent ? "accent" : ""}`} style={{ width: `${(r.n / max) * 100}%` }}>
-                <span className="num">{r.n}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div className="eff-axis"><span>0</span><span>100</span><span>200</span><span>300</span><span>400</span></div>
-        <p className="faint" style={{ fontSize: 12.5, margin: "8px 0 0" }}>Accepted tasks needed to reach a normalized maximum information gap of 0.30. All strategies start from the same 150 tasks and share validation.</p>
-      </div>
-      <div className="prose" style={{ fontSize: 17 }}>
-        <p>All three strategies begin with the same 150-task batch. Guided by the information gap, SecProbe concentrates synthesis on under-measured ability regions and reaches the target after <strong>244</strong> accepted tasks, versus <strong>328</strong> for random synthesis and <strong>346</strong> for one-shot synthesis: reductions of <strong>25.6%</strong> and <strong>29.5%</strong>.</p>
-        <p>Difficulty is also controllable: holding CWE and specification fixed, moving <Math tex="h" /> from Easy to Hard drops GPT-5.6-Sol's pass rate from 44.0% to 13.3%, with vulnerability complexity having the largest single effect.</p>
-      </div>
+    <div className="eff-summary prose">
+      <p>All three strategies begin with the same 150-task batch. Guided by the information gap, SecProbe concentrates synthesis on under-measured ability regions and reaches the target after <strong>244</strong> accepted tasks, versus <strong>328</strong> for random synthesis and <strong>346</strong> for one-shot synthesis: reductions of <strong>25.6%</strong> and <strong>29.5%</strong>.</p>
+      <p>Difficulty is also controllable: holding CWE and specification fixed, moving <Math tex="h" /> from Easy to Hard drops GPT-5.6-Sol's pass rate from 44.0% to 13.3%, with vulnerability complexity having the largest single effect.</p>
     </div>
   );
 }
