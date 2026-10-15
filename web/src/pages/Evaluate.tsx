@@ -98,7 +98,11 @@ function EvalConsole({ ctx, selection, onNeedKey }: { ctx: RunnerCtx; selection:
       )}
       {!hasHf && (
         <div className="alert alert-warn row-wrap">
-          <span>Task bundles live in a private Hugging Face dataset. Add a Hugging Face read token (from an account with access to <span className="mono">{CONFIG.hfDataset}</span>) so your runner can download them.</span>
+          <span>
+            Task bundles live in the gated Hugging Face dataset <span className="mono">{CONFIG.hfDataset}</span>.{" "}
+            <a href={`https://huggingface.co/datasets/${CONFIG.hfDataset}`} target="_blank" rel="noreferrer">Request access</a> with your Hugging Face account
+            (the authors approve requests manually), then add a Hugging Face <b>read</b> token from that account so your runner can download them.
+          </span>
           <span className="spacer" />
           <button className="btn btn-sm" onClick={() => onNeedKey("HF_TOKEN")}>Add token</button>
         </div>
