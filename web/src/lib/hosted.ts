@@ -71,7 +71,7 @@ export async function submitGeneration(token: string, publicKey: string, openaiK
   return r.request_id;
 }
 
-/** Read a JSON file from the public results repo — with the visitor's token if signed in (higher rate limit). */
+/** Read a JSON file from the private results repo using the approved visitor's token. */
 export async function readGenerated<T>(gh: GitHub | null, path: string): Promise<T | null> {
   if (gh) return gh.readJson<T>(CONFIG.generatedRepo, path, "main");
   const res = await fetch(`https://api.github.com/repos/${CONFIG.generatedRepo}/contents/${path}?ref=main`, {

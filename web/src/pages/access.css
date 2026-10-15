@@ -1,0 +1,27 @@
+.access-page { padding-top: 30px; padding-bottom: 88px; }
+.access-heading { max-width: 760px; margin: 48px 0 36px; }
+.access-heading .lede { margin: 16px 0 0; }
+.access-grid { display: grid; grid-template-columns: minmax(0, 760px) minmax(220px, 1fr); gap: 48px; align-items: start; }
+.access-form { display: grid; gap: 24px; padding: 28px; }
+.access-resources { border: 0; padding: 0; margin: 0; min-width: 0; }
+.access-resources legend { padding: 0; margin-bottom: 10px; }
+.access-options { display: grid; gap: 8px; }
+.access-option { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.access-option:hover { border-color: var(--line-strong); }
+.access-option.selected { border-color: var(--accent); background: var(--accent-soft); }
+.access-option input, .access-option > svg { flex: none; }
+.access-option input { margin: 0; }
+.access-option > svg { color: var(--accent-ink); }
+.access-option strong { font-size: 14px; font-weight: 600; }
+.access-option .hint { display: block; margin-top: 1px; }
+.access-error { margin: 8px 0 0; color: var(--vuln); font-size: 13px; }
+.access-purpose { font-family: var(--sans); font-size: 14px; min-height: 136px; }
+.access-draft-note { color: var(--muted); font-size: 12.5px; line-height: 1.6; }
+.access-form > .btn { justify-self: start; }
+.access-aside { padding-top: 4px; display: grid; gap: 30px; }
+.access-aside p { font-size: 13.5px; margin: 10px 0 16px; }
+.access-dataset { padding-top: 24px; border-top: 1px solid var(--line); }
+.access-text-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.access-text-link svg { flex: none; }
+@media (max-width: 860px) { .access-grid { grid-template-columns: 1fr; gap: 32px; } .access-aside { max-width: 620px; } }
+@media (max-width: 520px) { .access-heading { margin-top: 32px; } .access-form { padding: 20px; } .access-option { gap: 10px; padding: 12px; } }

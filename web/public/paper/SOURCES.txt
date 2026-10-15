@@ -1,0 +1,31 @@
+SecProbe paper figures
+
+Paper: SecProbe: Adaptive Evaluation of Coding Agents on Cybersecurity Vulnerabilities
+Authors: Xiaonan Luo et al.
+Version: arXiv:2609.33763v1 (September 27, 2026)
+Paper URL: https://arxiv.org/html/2609.33763v1
+PDF URL: https://arxiv.org/pdf/2609.33763
+License: CC BY 4.0 (as declared on the arXiv HTML paper).
+License URL: https://creativecommons.org/licenses/by/4.0/
+All assets are unmodified original figure assets hosted with the paper.
+SVGs contain embedded vector glyphs and internal references only; no external resources or scripts.
+
+framework-overview.svg
+Figure 1. SecProbe couples adaptive evaluation with on-demand multi-agent task synthesis.
+Source: https://arxiv.org/html/2609.33763v1/SecProbe_pipeline_latex_v8_aligned.svg
+Figure anchor: https://arxiv.org/html/2609.33763v1#S3.F1
+Suggested concise site caption: An adaptive evaluation loop identifies information gaps, then selects or synthesizes tasks to probe them.
+
+agent-performance.png
+Figure 8. Agent performance on the 353-task pool with Mini-SWE-Agent and Terminus-2. Bars show strict pass rates; lines show mean normalized grader scores.
+Source: https://arxiv.org/html/2609.33763v1/frontier_agent_results.png
+Figure anchor: https://arxiv.org/html/2609.33763v1#S4.F8
+Suggested concise site caption: Across nine frontier backbones and two harnesses, the best strict pass rate is 28.33%.
+
+adaptive-efficiency.svg
+Figure 9. Adaptive evaluation versus random and one-shot baselines. Left shows the normalized maximum information gap as tasks accumulate; right shows the accepted tasks needed to reach a gap of 0.30.
+Source: https://arxiv.org/html/2609.33763v1/adaptive_synthesis_effectiveness.svg
+Figure anchor: https://arxiv.org/html/2609.33763v1#S4.F9
+Suggested concise site caption: Adaptive synthesis reaches the target information gap with 244 accepted tasks, versus 328 for random and 346 for one-shot synthesis.
+
+Public presentation scope: framework and aggregate study findings only; no task repositories, task specifications, hidden tests, patches, or private data are included.

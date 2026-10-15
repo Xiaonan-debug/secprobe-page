@@ -1,0 +1,70 @@
+SecProbe author-affiliation logos
+Retrieved 2026-10-14. Logos identify the paper authors' institutions.
+Keep artwork colors, proportions, and clear space intact; display on a white surface.
+
+University of Notre Dame
+File: notre-dame.png
+Official home: https://www.nd.edu/
+Brand reference: https://onmessage.nd.edu/university-branding/logos/academic-mark/
+Exact asset URL: https://onmessage.nd.edu/assets/522051/academic_mark_primary_fullcolor_rgb_800px.png
+Variant: Primary academic mark, full color. Downloaded unchanged.
+
+Vanderbilt University
+File: vanderbilt.svg
+Official home and exact source URL: https://www.vanderbilt.edu/
+Brand reference: https://brand.vanderbilt.edu/logos-and-lockups/
+Variant: Public homepage symbol #vanderbilt-logo-text, black logotype.
+The symbol's original viewBox and path data are unchanged. The symbol was placed
+inside a standalone SVG container so it can be displayed with an HTML img element.
+The official primary-dimensional-V download requires university authentication.
+The brand guide allows the logotype alone and recommends it below 250 px;
+its specified minimum width is 150 px.
+
+University of Pennsylvania
+File: penn.png
+Official home: https://www.upenn.edu/
+Brand reference: https://branding.web-resources.upenn.edu/logos-and-branding
+Exact asset URL: https://branding.web-resources.upenn.edu/sites/default/files/2022-03/UniversityofPennsylvania_FullLogo_RGB-4_0.png
+Variant: Full-color institutional logo from the official brand site's download page.
+Downloaded unchanged.
+
+LMU Munich
+File: lmu.svg
+Official home: https://www.lmu.de/en/
+Brand reference: https://www.lmu.de/de/die-lmu/struktur/zentrale-universitaetsverwaltung/presse-und-kommunikation-puk/lmu-brand-guide/designgrundsaetze/logo/
+Exact asset URL: https://cms-cdn.lmu.de/assets/img/Logo_LMU.svg
+Variant: Official public homepage logo, green and white. Downloaded unchanged.
+The white elements are integral to this mark and must not be recolored.
+
+University of Washington
+File: washington.png
+Official home: https://www.washington.edu/
+Brand reference: https://www.washington.edu/brand/brand-elements/logos/
+Exact asset URL: https://cdn.uw.edu/wp-content/uploads/sites/230/2023/11/02134823/Signature_Center_Purple_Hex.png
+Variant: Centered signature (block W above wordmark), web HEX purple.
+Downloaded unchanged. Natural ratio 1054 x 216 pixels (4.88:1).
+
+Stanford University
+File: stanford.png
+Official home: https://www.stanford.edu/
+Brand reference: https://identity.stanford.edu/visual-identity/stanford-logos/wordmarks/
+Exact asset URL: https://identity.stanford.edu/wp-content/uploads/sites/3/2020/06/wordmark-full-nospace-red.png
+Variant: Full university wordmark, Cardinal red, transparent PNG.
+Downloaded unchanged. The official guide specifies a light background for this
+variant; retain a white logo-strip surface when the rest of the site is dark.
+
+Bake AI
+File: bake-ai.svg
+Official home: https://www.bakeai.inc/
+Exact asset URL: https://www.bakeai.inc/brand/bake-ai-wordmark.svg
+Variant: Official black horizontal wordmark, also used in the homepage header
+and Organization metadata. Downloaded unchanged; display on the white strip.
+
+Inria
+File: inria.svg
+Official home: https://www.inria.fr/
+Brand reference: https://www.inria.fr/fr/charte-dutilisation-de-lidentite-visuelle-dinria
+Official asset archive: https://files.inria.fr/dircom/extranet/LOGOS_pack_web.zip
+Archive member: LOGOS_pack_web/svg/inr_logo_rouge.svg
+Variant: Official red logo, extracted unchanged from Inria's public web asset pack.
+Preserve red color and clearspace; display on the white strip in both themes.

@@ -10,14 +10,16 @@ export const CONFIG = {
   githubClientId: (env.VITE_GITHUB_CLIENT_ID as string) || "",
   /** SecProbe API worker: OAuth code exchange + hosted task generation. */
   apiBase: ((env.VITE_API_BASE as string) || (env.VITE_AUTH_WORKER as string) || "").replace(/\/$/, ""),
-  /** Public repo where hosted generations publish progress, tasks and bundles. */
+  /** Private repo where hosted generations store progress, tasks and bundles. */
   generatedRepo: (env.VITE_GENERATED_REPO as string) || "Xiaonan-debug/secprobe-generated",
   /** Hugging Face dataset holding the full Harbor task bundles. */
   hfDataset: (env.VITE_HF_DATASET as string) || "xluobd/SecProbe-353",
-  /** Private repository holding all site content; read access to it is what grants access to the site. */
+  /** Private repository holding task content; read access grants access to protected pages. */
   dataRepo: (env.VITE_DATA_REPO as string) || "Xiaonan-debug/secprobe-data",
   /** Development/preview only: read data from web/public/data instead of the private repo. */
   localData: env.VITE_LOCAL_DATA === "1",
+  /** Authors review access requests through this form or mailto address. */
+  accessRequestUrl: (env.VITE_ACCESS_REQUEST_URL as string) || "https://github.com/Xiaonan-debug/secprobe-page/issues/new",
   paperUrl: "https://arxiv.org/abs/2609.33763",
   pdfUrl: "https://arxiv.org/pdf/2609.33763",
   codeUrl: (env.VITE_CODE_URL as string) || "https://github.com/Xiaonan-debug/secprobe-page",

@@ -8,6 +8,7 @@ import { CONFIG } from "../lib/config";
 import { useSession } from "../lib/store";
 import { timeAgo } from "../lib/format";
 import { SignInGate } from "../components/Runner";
+import { Math as LatexMath } from "../components/Math";
 import { IconLock, IconShield, IconSparkle } from "../components/Icons";
 import "./console.css";
 
@@ -35,7 +36,7 @@ export default function Generate() {
         <p className="eyebrow">Generate</p>
         <h1 className="h1">Synthesize a new vulnerability-repair task.</h1>
         <p className="lede" style={{ maxWidth: 740, marginTop: 12 }}>
-          Specify a CWE class c, a software context s and the difficulty vector h. Five specialist agents research, design, build, test and review a repository-scale task;
+          Specify a CWE class <LatexMath tex="c" />, a software context <LatexMath tex="s" /> and the difficulty vector <LatexMath tex="h" />. Five specialist agents research, design, build, test and review a repository-scale task;
           it is released only if deterministic validation and a containerized oracle run pass.
         </p>
       </header>
@@ -114,7 +115,7 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
       <div className="gen-grid">
         <div className="stack" style={{ gap: 28 }}>
           <section className="cfg">
-            <div className="cfg-head"><span className="cfg-n">c</span><h2 className="h3">Vulnerability class</h2></div>
+            <div className="cfg-head"><span className="cfg-n"><LatexMath tex="c" /></span><h2 className="h3">Vulnerability class</h2></div>
             <CwePicker value={cwe} onChange={setCwe} options={cwes.data ?? []} />
             <div className="hint" style={{ marginTop: 8 }}>
               {existing ? (
@@ -124,7 +125,7 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
           </section>
 
           <section className="cfg">
-            <div className="cfg-head"><span className="cfg-n">s</span><h2 className="h3">Software context</h2></div>
+            <div className="cfg-head"><span className="cfg-n"><LatexMath tex="s" /></span><h2 className="h3">Software context</h2></div>
             <div className="settings-grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
               <div className="field">
                 <label>Implementation language</label>
@@ -139,9 +140,9 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
 
           <section className="cfg">
             <div className="cfg-head">
-              <span className="cfg-n">h</span><h2 className="h3">Difficulty</h2>
+              <span className="cfg-n"><LatexMath tex="h" /></span><h2 className="h3">Difficulty</h2>
               <span className="spacer" />
-              <label className="row hint" style={{ gap: 8 }}><input type="checkbox" checked={custom} onChange={(e) => setCustom(e.target.checked)} /> Customize h</label>
+              <label className="row hint" style={{ gap: 8 }}><input type="checkbox" checked={custom} onChange={(e) => setCustom(e.target.checked)} /> Customize <LatexMath tex="h" /></label>
             </div>
             <div className="diff-pick">
               {DIFFS.map((d) => (
@@ -154,7 +155,7 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
               <div className="ctl-groups fade-in" style={{ marginTop: 14 }}>
                 {CONTROL_GROUPS.map((g) => (
                   <div className="ctl-group" key={g.key}>
-                    <div className="ctl-group-head"><span className="h3" style={{ fontSize: 13.5 }}>{g.label}</span><span className="mono faint" style={{ fontSize: 11.5 }}>{g.symbol}</span></div>
+                    <div className="ctl-group-head"><span className="h3" style={{ fontSize: 13.5 }}>{g.label}</span><span className="faint" style={{ fontSize: 11.5 }}><LatexMath tex={`h_{\\mathrm{${g.key}}}`} /></span></div>
                     {g.fields.map((f) => (
                       <label className="ctl-row" key={f.key}>
                         <span className="muted">{f.label}</span>
@@ -199,8 +200,8 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
         <aside className="summary">
           <div className="summary-card">
             <div className="eyebrow" style={{ marginBottom: 12 }}>Configuration</div>
-            <div className="mono" style={{ fontSize: 13, lineHeight: 1.7, marginBottom: 14, color: "var(--ink-2)" }}>
-              x ~ D(<span style={{ color: "var(--accent-ink)" }}>{cwe}</span>, s, h)
+            <div style={{ fontSize: 13, lineHeight: 1.7, marginBottom: 14, color: "var(--ink-2)" }}>
+              <LatexMath tex={`x \\sim \\mathcal{D}(\\text{${cwe}}, s, h)`} />
             </div>
             <dl className="summary-kv">
               <div><dt>Language</dt><dd>{LANG_OPTS.find((o) => o.id === language)?.label}</dd></div>
@@ -216,7 +217,7 @@ function GenConsole({ login, config }: { login: string; config: HostedConfig }) 
             <button className="btn btn-accent" style={{ width: "100%", justifyContent: "center", height: 44 }} disabled={busy || !validCwe || !hasKey || !model || !token} onClick={launch}>
               {busy ? <div className="spinner" /> : <><IconSparkle /> Generate task</>}
             </button>
-            <p className="hint" style={{ margin: "12px 0 0" }}><IconLock width={11} height={11} style={{ display: "inline", verticalAlign: -1 }} /> Generated tasks are published to the public <a href={`https://github.com/${CONFIG.generatedRepo}`} target="_blank" rel="noreferrer">community pool</a> under your GitHub name. The generator source stays private.</p>
+            <p className="hint" style={{ margin: "12px 0 0" }}><IconLock width={11} height={11} style={{ display: "inline", verticalAlign: -1 }} /> Generated tasks are stored in the private <a href={`https://github.com/${CONFIG.generatedRepo}`} target="_blank" rel="noreferrer">task pool</a> under your GitHub name. The generator source stays private.</p>
           </div>
         </aside>
       </div>

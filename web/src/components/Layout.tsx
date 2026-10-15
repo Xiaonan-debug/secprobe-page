@@ -2,24 +2,24 @@ import { ReactNode, useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSession } from "../lib/store";
 import { CONFIG } from "../lib/config";
-import { IconMenu, IconMonitor, IconMoon, IconSun, IconX } from "./Icons";
+import { IconLock, IconMenu, IconMonitor, IconMoon, IconSun, IconX } from "./Icons";
 import "./layout.css";
 
-export function Logo({ size = 22 }: { size?: number }) {
+// Two opposing sweeps form an open feedback loop around the subject being probed.
+export function Logo({ size = 28 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="7" fill="var(--ink)" />
-      <path d="M9 21.5c1.4 1.3 3.4 2 5.6 2 3.3 0 5.4-1.6 5.4-4 0-2.2-1.5-3.2-4.6-3.9-2.4-.5-3.1-1-3.1-2 0-1 .9-1.7 2.6-1.7 1.5 0 2.8.5 3.8 1.3" fill="none" stroke="var(--bg)" strokeWidth="2.4" strokeLinecap="round" />
-      <circle cx="23.5" cy="9" r="2.2" fill="var(--accent)" />
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M8 32C8 18.745 18.745 8 32 8h17l-9 9h-8c-8.284 0-15 6.716-15 15v17l-9-9V32Z" fill="currentColor" />
+      <path d="M56 32c0 13.255-10.745 24-24 24H15l9-9h8c8.284 0 15-6.716 15-15V15l9 9v8Z" fill="var(--accent)" />
     </svg>
   );
 }
 
 const NAV = [
-  { to: "/tasks", label: "Tasks" },
-  { to: "/evaluate", label: "Evaluate" },
-  { to: "/generate", label: "Generate" },
-  { to: "/analysis", label: "SAST vs Agents" },
+  { to: "/tasks", label: "Tasks", restricted: true },
+  { to: "/evaluate", label: "Evaluate", restricted: true },
+  { to: "/generate", label: "Generate", restricted: true },
+  { to: "/analysis", label: "SAST vs Agents", restricted: true },
   { to: "/#results", label: "Results", hash: true },
 ];
 
@@ -39,7 +39,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const loc = useLocation();
-  useEffect(() => setOpen(false), [loc.pathname]);
+  useEffect(() => setOpen(false), [loc.pathname, loc.search, loc.hash]);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
     on();
@@ -60,11 +60,12 @@ export function Header() {
               <Link key={n.to} to={n.to} className="nav-link" onClick={() => setTimeout(() => document.getElementById("results")?.scrollIntoView(), 50)}>{n.label}</Link>
             ) : (
               <NavLink key={n.to} to={n.to} className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-                {n.label}
+                {n.label}{n.restricted && <IconLock width={11} height={11} aria-label="Access required" />}
                 {n.to === "/evaluate" && selection.length > 0 && <span className="nav-badge num">{selection.length}</span>}
               </NavLink>
             ),
           )}
+          <NavLink to="/access" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>Request access</NavLink>
           <a className="nav-link" href={CONFIG.paperUrl} target="_blank" rel="noreferrer">Paper</a>
         </nav>
         <div className="hdr-right">
@@ -88,8 +89,8 @@ export function Footer() {
     <footer className="ftr">
       <div className="wrap ftr-in">
         <div className="row" style={{ gap: 12 }}>
-          <Logo size={20} />
-          <span className="mono" style={{ fontSize: 12 }}>SecProbe</span>
+          <Logo size={26} />
+          <span style={{ fontSize: 14, fontWeight: 500 }}>SecProbe</span>
         </div>
         <p className="faint" style={{ fontSize: 13, margin: 0, maxWidth: 560 }}>
           University of Notre Dame · Bake AI · Vanderbilt · UPenn · LMU Munich · UW · Stanford · Inria.
@@ -97,7 +98,8 @@ export function Footer() {
         </p>
         <div className="row" style={{ gap: 18, fontSize: 13 }}>
           <a href={CONFIG.paperUrl} target="_blank" rel="noreferrer">arXiv</a>
-          <a href={CONFIG.codeUrl} target="_blank" rel="noreferrer">Code</a>
+          <Link to="/access?resource=code">Code</Link>
+          <Link to="/access?resource=data">Data</Link>
           <Link to="/tasks">Tasks</Link>
         </div>
       </div>

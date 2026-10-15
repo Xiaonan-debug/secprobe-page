@@ -1,8 +1,6 @@
 import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/source-serif-4";
+import { HashRouter, Outlet, Route, Routes } from "react-router-dom";
 import "@fontsource-variable/jetbrains-mono";
 import "./styles/global.css";
 import { SessionProvider } from "./lib/store";
@@ -19,6 +17,7 @@ window.addEventListener("vite:preloadError", (e) => {
   location.reload();
 });
 
+const Access = lazy(() => import("./pages/Access"));
 const Tasks = lazy(() => import("./pages/Tasks"));
 const TaskPage = lazy(() => import("./pages/TaskPage"));
 const Evaluate = lazy(() => import("./pages/Evaluate"));
@@ -44,21 +43,22 @@ createRoot(document.getElementById("root")!).render(
     <SessionProvider>
       <HashRouter>
         <Page>
-          <AccessGate>
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/tasks" element={<Tasks />} />
-              <Route path="/tasks/:id" element={<TaskPage />} />
-              <Route path="/evaluate" element={<Evaluate />} />
-              <Route path="/evaluate/:rid" element={<EvalRun />} />
-              <Route path="/generate" element={<Generate />} />
-              <Route path="/generate/:rid" element={<GenRun />} />
-              <Route path="/analysis" element={<AnalysisPage />} />
+              <Route path="/access" element={<Access />} />
+              <Route element={<AccessGate><Outlet /></AccessGate>}>
+                <Route path="/tasks" element={<Tasks />} />
+                <Route path="/tasks/:id" element={<TaskPage />} />
+                <Route path="/evaluate" element={<Evaluate />} />
+                <Route path="/evaluate/:rid" element={<EvalRun />} />
+                <Route path="/generate" element={<Generate />} />
+                <Route path="/generate/:rid" element={<GenRun />} />
+                <Route path="/analysis" element={<AnalysisPage />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-          </AccessGate>
         </Page>
       </HashRouter>
     </SessionProvider>
