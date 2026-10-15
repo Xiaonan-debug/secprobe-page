@@ -79,6 +79,33 @@ export class GitHub {
     });
   }
 
+  /**
+   * Create the visitor's runner. GitHub only lets the template's owner (or org members) generate from a
+   * private template, so collaborators get an empty private repo that is then filled from the template.
+   */
+  async createRunner(owner: string, name: string, isPrivate: boolean): Promise<GhRepo> {
+    try {
+      return await this.createFromTemplate(owner, name, isPrivate);
+    } catch (e) {
+      if (!(e instanceof GitHubError) || ![403, 404, 422].includes(e.status)) throw e;
+      if (e.status === 422 && (await this.repo(`${owner}/${name}`))) throw e; // name already taken
+    }
+    const repo = await this.req<GhRepo>("/user/repos", {
+      method: "POST",
+      body: JSON.stringify({
+        name, private: isPrivate, auto_init: true,
+        description: "My SecProbe runner: evaluates coding agents with my own API keys.",
+      }),
+    });
+    // auto_init's first commit can take a moment to become visible.
+    for (let i = 0; i < 15; i++) {
+      try { await this.req(`/repos/${repo.full_name}/git/ref/heads/${repo.default_branch || "main"}`); break; }
+      catch { await new Promise((r) => setTimeout(r, 1500)); }
+    }
+    await this.syncFromTemplate(repo.full_name, repo.default_branch || "main");
+    return repo;
+  }
+
   async workflowsReady(full: string): Promise<boolean> {
     try {
       const r = await this.req<{ workflows: { path: string; state: string }[] }>(`/repos/${full}/actions/workflows`);
@@ -143,10 +170,10 @@ export class GitHub {
    * Bring the visitor's runner up to date with the template: copies every template file whose
    * content differs into one commit on the runner's default branch. Files only in the runner are kept.
    */
-  async syncFromTemplate(full: string): Promise<number> {
+  async syncFromTemplate(full: string, branch = "main"): Promise<number> {
     type Tree = { sha: string; tree: { path: string; mode: string; type: string; sha: string }[] };
     const tpl = await this.req<Tree>(`/repos/${CONFIG.templateRepo}/git/trees/main?recursive=1`);
-    const ref = await this.req<{ object: { sha: string } }>(`/repos/${full}/git/ref/heads/main`);
+    const ref = await this.req<{ object: { sha: string } }>(`/repos/${full}/git/ref/heads/${branch}`);
     const head = await this.req<{ tree: { sha: string } }>(`/repos/${full}/git/commits/${ref.object.sha}`);
     const mine = await this.req<Tree>(`/repos/${full}/git/trees/${head.tree.sha}?recursive=1`);
     const have = new Map(mine.tree.map((e) => [e.path, e.sha]));
@@ -166,9 +193,9 @@ export class GitHub {
     });
     const commit = await this.req<{ sha: string }>(`/repos/${full}/git/commits`, {
       method: "POST",
-      body: JSON.stringify({ message: "Update SecProbe runner from template", tree: tree.sha, parents: [ref.object.sha] }),
+      body: JSON.stringify({ message: "Install SecProbe runner from template", tree: tree.sha, parents: [ref.object.sha] }),
     });
-    await this.req(`/repos/${full}/git/refs/heads/main`, { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
+    await this.req(`/repos/${full}/git/refs/heads/${branch}`, { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
     return changed.length;
   }
 

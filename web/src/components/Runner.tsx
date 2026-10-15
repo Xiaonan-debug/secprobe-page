@@ -128,7 +128,8 @@ export function SignIn() {
 
 function CreateRunner() {
   const { gh, user, setRepo } = useSession();
-  const [priv, setPriv] = useState(false);
+  // Private preview: runner results include task code (agent patches), so runners are always private.
+  const priv = true;
   const [phase, setPhase] = useState<"idle" | "creating" | "waiting">("idle");
   const [err, setErr] = useState<string | null>(null);
 
@@ -137,7 +138,7 @@ function CreateRunner() {
     setErr(null);
     setPhase("creating");
     try {
-      const r = await gh.createFromTemplate(user.login, CONFIG.runnerRepoName, priv);
+      const r = await gh.createRunner(user.login, CONFIG.runnerRepoName, priv);
       setPhase("waiting");
       for (let i = 0; i < 30; i++) {
         if (await gh.workflowsReady(r.full_name)) break;
@@ -152,16 +153,10 @@ function CreateRunner() {
 
   return (
     <div className="stack">
-      <div className="vis-pick">
-        <button className={`vis ${!priv ? "on" : ""}`} onClick={() => setPriv(false)}>
-          <div className="vis-t">Public <span className="chip chip-ok" style={{ height: 20 }}>recommended</span></div>
-          <div className="vis-d">Free, unlimited Actions minutes. Logs and results are publicly readable; keys are always masked.</div>
-        </button>
-        <button className={`vis ${priv ? "on" : ""}`} onClick={() => setPriv(true)}>
-          <div className="vis-t">Private</div>
-          <div className="vis-d">Only you can see runs. Uses your plan's Actions minutes (2,000 free per month on GitHub Free).</div>
-        </button>
-      </div>
+      <p className="hint" style={{ margin: 0 }}>
+        The runner is created as a <b>private</b> repository: its results contain task code, which must stay private during the preview.
+        Private repositories use your plan's Actions minutes (2,000 free per month on GitHub Free).
+      </p>
       <div className="row-wrap">
         <button className="btn btn-primary" onClick={create} disabled={phase !== "idle"}>
           {phase === "idle" ? <>Create <span className="mono">{user?.login}/{CONFIG.runnerRepoName}</span></> : <><div className="spinner" /> {phase === "creating" ? "Creating repository…" : "Waiting for workflows…"}</>}
